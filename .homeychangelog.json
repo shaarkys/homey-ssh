@@ -16,5 +16,8 @@
   },
   "1.3.2": {
     "en": "- Prevented app crashes on SSH socket errors like ECONNRESET/EPIPE\n- Improved error handling for common connection drop cases"
+  },
+  "1.2.1": {
+    "en": "Prevented app crashes on SSH socket errors, Improved error handling for common connection drop cases, new developer, new logo"
   }
 }
