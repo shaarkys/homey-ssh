@@ -1,0 +1,12 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "Connection failed",
+    "de": "Verbindung fehlgeschlagen"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "icon": "/assets/images/disconnected.svg",
+  "insights": true
+}

@@ -1,0 +1,182 @@
+{
+  "actions": [
+    {
+      "id": "send_sync_ssh_command",
+      "title": {
+        "en": "Send command",
+        "de": "Kommando senden"
+      },
+      "titleFormatted": {
+        "en": "Send command [[command]]",
+        "de": "Sende Kommando [[command]]"
+      },
+      "args": [
+        {
+          "type": "text",
+          "name": "command",
+          "title": {
+            "en": "Command",
+            "de": "Kommando"
+          },
+          "placeholder": {
+            "en": "whoami",
+            "de": "whoami"
+          }
+        }
+      ],
+      "tokens": [
+        {
+          "name": "stdout",
+          "type": "string",
+          "title": {
+            "en": "Output of the command (stdout). If there is no output, this value is empty.",
+            "de": "Ausgabe des Kommandos (stdout). Wenn keine Ausgabe erfolgt, ist dieser Wert leer."
+          }
+        },
+        {
+          "name": "stderr",
+          "type": "string",
+          "title": {
+            "en": "Erroroutput of the command (stderr). If there is no output, this value is empty.",
+            "de": "Fehlerausgabe des Kommandos (stderr). Wenn keine Ausgabe erfolgt, ist dieser Wert leer."
+          }
+        },
+        {
+          "name": "code",
+          "type": "number",
+          "title": {
+            "en": "If available, the return code is provided here",
+            "de": "Wenn vorhanden, wird hier der Returncode bereit gestellt."
+          },
+          "example": 0
+        },
+        {
+          "name": "signal",
+          "type": "string",
+          "title": {
+            "en": "If available, the signal response is provided here",
+            "de": "Wenn vorhanden, wird hier das gesendete signal bereit gestellt."
+          }
+        }
+      ],
+      "hint": {
+        "en": "Synchronously executes the specified command via SSH and makes the result available in the flow.",
+        "de": "Führt synchron den angegeben Befehl per SSH aus und stellt das Ergebnis im Flow zur Verfügung."
+      }
+    },
+    {
+      "id": "send_async_ssh_command",
+      "title": {
+        "en": "Send command asynchronously",
+        "de": "Kommando asynchron senden"
+      },
+      "titleFormatted": {
+        "en": "Send command [[command]] asynchronously",
+        "de": "Sende Kommando [[command]] asynchron"
+      },
+      "args": [
+        {
+          "type": "text",
+          "name": "command",
+          "title": {
+            "en": "Command",
+            "de": "Kommando"
+          },
+          "placeholder": {
+            "en": "whoami",
+            "de": "whoami"
+          }
+        }
+      ],
+      "hint": {
+        "en": "Executes the specified command asynchronously via SSH. As soon as the result is available, the \"SSH result is ready\" card is called up.",
+        "de": "Führt asynchron den angegeben Befehl per SSH aus. Sobald das Ergebnis vorliegt, wird die Karte \"SSH Ergebnis steht bereit\" aufgerufen"
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "id": "async_ssh_command_success",
+      "title": {
+        "en": "SSH result is ready",
+        "de": "SSH Ergebnis steht bereit"
+      },
+      "tokens": [
+        {
+          "name": "command",
+          "type": "string",
+          "title": {
+            "en": "Command that triggered the result.",
+            "de": "Kommando, welches das Ergebnis ausgelöst hat."
+          }
+        },
+        {
+          "name": "stdout",
+          "type": "string",
+          "title": {
+            "en": "Output of the command (stdout). If there is no output, this value is empty.",
+            "de": "Ausgabe des Kommandos (stdout). Wenn keine Ausgabe erfolgt, ist dieser Wert leer."
+          }
+        },
+        {
+          "name": "stderr",
+          "type": "string",
+          "title": {
+            "en": "Erroroutput of the command (stderr). If there is no output, this value is empty.",
+            "de": "Fehlerausgabe des Kommandos (stderr). Wenn keine Ausgabe erfolgt, ist dieser Wert leer."
+          }
+        },
+        {
+          "name": "code",
+          "type": "number",
+          "title": {
+            "en": "If available, the return code is provided here",
+            "de": "Wenn vorhanden, wird hier der Returncode bereit gestellt."
+          },
+          "example": 0
+        },
+        {
+          "name": "signal",
+          "type": "string",
+          "title": {
+            "en": "If available, the signal response is provided here",
+            "de": "Wenn vorhanden, wird hier das gesendete signal bereit gestellt."
+          }
+        }
+      ],
+      "hint": {
+        "en": "As soon as an asynchronously sent SSH command has been completed, this card is called up.",
+        "de": "Sobald ein asynchron gesendetes SSH Kommando abgeschlossen wurde, wird diese Karte aufgerufen."
+      }
+    },
+    {
+      "id": "async_ssh_command_failed",
+      "title": {
+        "en": "Asynchronous SSH call failed",
+        "de": "Asynchroner SSH Aufruf ist fehlgeschlagen"
+      },
+      "tokens": [
+        {
+          "name": "command",
+          "type": "string",
+          "title": {
+            "en": "Command that failed.",
+            "de": "Kommando, fehlgeschlagen ist."
+          }
+        },
+        {
+          "name": "errormessage",
+          "type": "string",
+          "title": {
+            "en": "Description of the error",
+            "de": "Beschreibung des Fehlers"
+          }
+        }
+      ],
+      "hint": {
+        "en": "As soon as an asynchronously sent SSH command fails, this card is called.",
+        "de": "Sobald ein asynchron gesendetes SSH Kommando fehlschlägt, wird diese Karte aufgerufen."
+      }
+    }
+  ]
+}

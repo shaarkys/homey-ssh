@@ -1,0 +1,42 @@
+{
+  "id": "de.jnkconsulting.smart.ssh4homey",
+  "version": "1.2.0",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "brandColor": "#000000",
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "Simple-SSH",
+    "de": "Simple-SSH"
+  },
+  "description": {
+    "en": "A full working SSH Client for Homey. Control your services and ssh enabled devices, from Homey"
+  },
+  "category": [
+    "tools"
+  ],
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "Jochen Zink"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/de.jnkconsulting/smart/homey-ssh/-/issues"
+  },
+  "source": "https://gitlab.com/de.jnkconsulting/smart/homey-ssh/-/tree/main",
+  "support": "mailto:contact-project+de-jnkconsulting-smart-homey-ssh-42484585-issue-@incoming.gitlab.com",
+  "contributing": {
+    "donate": {
+      "paypal": {
+        "username": "jochenzink84"
+      }
+    }
+  }
+
+}

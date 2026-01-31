@@ -1,0 +1,47 @@
+{
+  "setup": {
+    "main": "SSH Server",
+    "title": "Connection data",
+    "name": "Device name",
+    "address": "Server address",
+    "address-hint": "IP address or host name of the SSH server",
+    "port": "Server port",
+    "port-hint": "Port number on which the SSH service is listening on the server",
+    "auth": {
+      "title": "Authentication",
+      "type": "Type",
+      "password": "Username/Password",
+      "key": "Private key"
+    },
+    "algorithm": {
+      "title": "Details",
+      "kex": "Key Exchange Algorithm (kex)",
+      "cipher": "Encryption algorithm",
+      "hostkey": "HostKey Algorithm",
+      "hmac": "HMac",
+      "compression": "Compression algorithm"
+    },
+    "username": "Username",
+    "username-hint": "Name of the user to be logged on to the server",
+    "password": "Password",
+    "password-hint": "If username/password authentication is to be used, the password must be entered here. If a private key AND a password is entered, the key is always used.",
+    "key": "Private key",
+    "passphrase": "Passphrase",
+    "check": "Check connection",
+    "validation": {
+      "required": "The field __input__ must be filled in",
+      "port": "The field __input__ must be filled in and the value must be between 1 and 65535"
+    },
+    "connection-test": {
+      "success": "Success",
+      "failed": "Failed",
+      "failed-detail": "Failed: __detail__",
+      "failed-authentication": "Authentication failed",
+      "failed-unreachable-host": "Server not found"
+    },
+    "command": {
+      "failed": "Command failed (exit __code__): __stderr__"
+    }
+  },
+  "please-wait": "Please wait"
+}

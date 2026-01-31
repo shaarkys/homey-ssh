@@ -1,0 +1,53 @@
+{
+  "id": "global_ssh_command_failed",
+  "title": {
+    "en": "SSH command failed (any device)",
+    "de": "SSH Kommando fehlgeschlagen (jedes Ger\u00e4t)"
+  },
+  "tokens": [
+    {
+      "name": "device_name",
+      "type": "string",
+      "title": {
+        "en": "Device name",
+        "de": "Ger\u00e4tename"
+      }
+    },
+    {
+      "name": "device_id",
+      "type": "string",
+      "title": {
+        "en": "Device id",
+        "de": "Ger\u00e4te-ID"
+      }
+    },
+    {
+      "name": "host",
+      "type": "string",
+      "title": {
+        "en": "Host",
+        "de": "Host"
+      }
+    },
+    {
+      "name": "command",
+      "type": "string",
+      "title": {
+        "en": "Command that failed.",
+        "de": "Kommando, fehlgeschlagen ist."
+      }
+    },
+    {
+      "name": "errormessage",
+      "type": "string",
+      "title": {
+        "en": "Description of the error",
+        "de": "Beschreibung des Fehlers"
+      }
+    }
+  ],
+  "hint": {
+    "en": "Triggers when any SSH command fails on any SSH device.",
+    "de": "Wird ausgel\u00f6st, wenn ein SSH Kommando auf einem SSH Ger\u00e4t fehlschl\u00e4gt."
+  }
+}

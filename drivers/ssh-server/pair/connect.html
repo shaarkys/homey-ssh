@@ -1,0 +1,243 @@
+<script type="application/javascript">
+
+  Homey.setTitle(Homey.__('setup.main'))
+
+  Homey.emit("getSettings").then(function (settings) {
+      if (settings){
+          document.getElementById('name').value = settings.name;
+          document.getElementById('address').value = settings.host;
+          document.getElementById('port').value = settings.port;
+          document.getElementById('username').value = settings.credentials.username;
+          if (settings.authType === 'USERNAME_PASSWORD') {
+              document.getElementById('password').value = settings.credentials.password;
+          }
+          else {
+              document.getElementById('key').value = settings.credentials.privateKey;
+              document.getElementById('passphrase').value = settings.credentials.passphrase;
+          }
+          if (settings.kexAlgorithm) {
+              document.getElementById('kex').value = settings.kexAlgorithm
+          }
+          if (settings.compression) {
+              document.getElementById('compression').value = settings.compression
+          }
+          if (settings.hmac) {
+              document.getElementById('hmac').value = settings.hmac
+          }
+          if (settings.hostKeyAlgorithm) {
+              document.getElementById('hostKey').value = settings.hostKeyAlgorithm
+          }
+          if (settings.cipherAlgorithm) {
+              document.getElementById('cipher').value = settings.cipherAlgorithm
+          }
+      }
+  });
+
+  function readInputs() {
+      let inputs = {
+          name: document.getElementById('name').value,
+          host: document.getElementById('address').value,
+          port: parseInt(document.getElementById('port').value),
+          credentials: {
+              username: document.getElementById('username').value,
+          },
+          kexAlgorithm: document.getElementById('kex').value,
+          cipherAlgorithm: document.getElementById('cipher').value,
+          hostKeyAlgorithm: document.getElementById('hostKey').value,
+          hmac: document.getElementById('hmac').value,
+          compression: document.getElementById('compression').value,
+      };
+      const authTypePassword = document.getElementById('auth.type.password');
+      if (authTypePassword.checked) {
+          inputs.authType = 'USERNAME_PASSWORD';
+          inputs.credentials.password = document.getElementById('password').value
+      }
+      else {
+          inputs.authType = 'PRIVATE_KEY';
+          inputs.credentials.privateKey = document.getElementById('key').value
+          inputs.credentials.passphrase = document.getElementById('passphrase').value
+      }
+
+      return inputs;
+  }
+
+  function settingsChanged(){
+      const authTypePassword = document.getElementById('auth.type.password');
+      const authTypeKey = document.getElementById('auth.type.key');
+      if (authTypePassword.checked && !authTypeKey.checked) {
+        document.getElementById('password-group').classList.remove('hidden');
+        document.getElementById('key-group').classList.add('hidden');
+      } else if (!authTypePassword.checked && authTypeKey.checked) {
+        document.getElementById('password-group').classList.add('hidden');
+        document.getElementById('key-group').classList.remove('hidden');
+      } else {
+        document.getElementById('password-group').classList.add('hidden');
+        document.getElementById('key-group').classList.add('hidden');
+      }
+
+      let value = readInputs();
+      Homey.emit("settingsChanged", value).then(function (result) {});
+  }
+
+  function checkConnection(){
+      document.getElementById('check').classList.add('is-loading');
+      let value = readInputs();
+      Homey.emit("checkConnection", value).then(function (result) {
+          document.getElementById('check').classList.remove('is-loading');
+          Homey.alert(result);
+      })
+  }
+
+</script>
+<style>
+    #sshconnection {
+        font-family: sans-serif;
+    }
+
+    .hidden {
+        display: none;
+    }
+</style>
+
+<div id="sshconnection">
+    <header class="homey-header">
+        <h1 class="homey-title" data-i18n="setup.title"></h1>
+    </header>
+    <form class="homey-form">
+        <fieldset class="homey-form-fieldset">
+            <div class="homey-form-group">
+                <label class="homey-form-label" for="name"><span data-i18n="setup.name">Device name</span></label>
+                <input class="homey-form-input" id="name" type="text" value="" oninput="settingsChanged()"/>
+            </div>
+            <div class="homey-form-group">
+                <label class="homey-form-label" for="address"><span data-i18n="setup.address">Serveradresse</span></label>
+                <input class="homey-form-input" id="address" type="text" value="" oninput="settingsChanged()"/>
+            </div>
+            <div class="homey-form-group">
+                <label class="homey-form-label" for="port"><span data-i18n="setup.port">Port</span></label>
+                <input class="homey-form-input" id="port" type="text" value="" oninput="settingsChanged()"/>
+            </div>
+        </fieldset>
+        <fieldset class="homey-form-fieldset">
+            <legend class="homey-form-legend" data-i18n="setup.auth.title"></legend>
+            <div class="homey-form-group">
+                <fieldset class="homey-form-radio-set">
+                    <legend class="homey-form-radio-set-title"><span data-i18n="setup.auth.type">Authentifizierungsart</span></legend>
+
+                    <label class="homey-form-radio">
+                        <input id="auth.type.password" class="homey-form-radio-input" name="auth-type" type="radio" value="password" oninput="settingsChanged()">
+                        <span class="homey-form-radio-checkmark"></span>
+                        <span class="homey-form-radio-text" data-i18n="setup.auth.password">Username/Passwort</span>
+                    </label>
+                    <label class="homey-form-radio">
+                        <input id="auth.type.key" class="homey-form-radio-input" name="auth-type" type="radio" value="key" oninput="settingsChanged()">
+                        <span class="homey-form-radio-checkmark"></span>
+                        <span class="homey-form-radio-text" data-i18n="setup.auth.key">Key</span>
+                    </label>
+                </fieldset>
+            </div>
+            <div class="homey-form-group">
+                <label class="homey-form-label" for="username"><span data-i18n="setup.username">Username</span></label>
+                <input class="homey-form-input" id="username" type="text"  oninput="settingsChanged()"/>
+            </div>
+            <div id="password-group" class="homey-form-group hidden">
+                <label class="homey-form-label" for="password"><span data-i18n="setup.password">Passwort</span></label>
+                <input class="homey-form-input" id="password" type="password"  oninput="settingsChanged()"/>
+            </div>
+            <div id="key-group" class="homey-form-group hidden" style="margin-bottom: 8px">
+                <label class="homey-form-label" for="key"><span data-i18n="setup.key">Key</span></label>
+                <textarea class="homey-form-textarea" rows="10" id="key" oninput="settingsChanged()"></textarea>
+                <label class="homey-form-label" for="passphrase"><span data-i18n="setup.passphrase">Passphrase</span></label>
+                <input class="homey-form-input" id="passphrase" type="password"  oninput="settingsChanged()"/>
+            </div>
+        </fieldset>
+        <fieldset class="homey-form-fieldset">
+            <legend class="homey-form-legend" data-i18n="setup.algorithm.title"></legend>
+            <div class="homey-form-group">
+                <label class="homey-form-label" for="kex"><span data-i18n="setup.algorithm.kex">Kex</span></label>
+                <select class="home-form-input" id="kex" name="kex" onselect="settingsChanged()">
+                    <option value="default">default</option>
+                    <option value="curve25519-sha256">curve25519-sha256</option>
+                    <option value="curve25519-sha256@libssh.org">curve25519-sha256@libssh.org</option>
+                    <option value="ecdh-sha2-nistp256">ecdh-sha2-nistp256</option>
+                    <option value="ecdh-sha2-nistp384">ecdh-sha2-nistp384</option>
+                    <option value="ecdh-sha2-nistp521">ecdh-sha2-nistp521</option>
+                    <option value="diffie-hellman-group-exchange-sha256">diffie-hellman-group-exchange-sha256</option>
+                    <option value="diffie-hellman-group14-sha256">diffie-hellman-group14-sha256</option>
+                    <option value="diffie-hellman-group15-sha512">diffie-hellman-group15-sha512</option>
+                    <option value="diffie-hellman-group16-sha512">diffie-hellman-group16-sha512</option>
+                    <option value="diffie-hellman-group17-sha512">diffie-hellman-group17-sha512</option>
+                    <option value="diffie-hellman-group18-sha512">diffie-hellman-group18-sha512</option>
+                    <option value="diffie-hellman-group-exchange-sha1">diffie-hellman-group-exchange-sha1</option>
+                    <option value="diffie-hellman-group14-sha1">diffie-hellman-group14-sha1</option>
+                    <option value="diffie-hellman-group1-sha1">diffie-hellman-group1-sha1</option>
+                </select>
+            </div>
+            <div class="homey-form-group">
+                <label class="homey-form-label" for="cipher"><span data-i18n="setup.algorithm.cipher">Cipher</span></label>
+                <select class="home-form-input" id="cipher" name="cipher" onselect="settingsChanged()">
+                    <option value="default">default</option>
+                    <option value="chacha20-poly1305@openssh.com">chacha20-poly1305@openssh.com</option>
+                    <option value="aes128-gcm">aes128-gcm</option>
+                    <option value="es128-gcm@openssh.com">aes128-gcm@openssh.com</option>
+                    <option value="aes256-gcm">aes256-gcm</option>
+                    <option value="aes256-gcm@openssh.com">aes256-gcm@openssh.com</option>
+                    <option value="aes128-ctr">aes128-ctr</option>
+                    <option value="aes192-ctr">aes192-ctr</option>
+                    <option value="aes256-ctr">aes256-ctr</option>
+                    <option value="aes256-cbc">aes256-cbc</option>
+                    <option value="aes192-cbc">aes192-cbc</option>
+                    <option value="aes128-cbc">aes128-cbc</option>
+                    <option value="blowfish-cbc">blowfish-cbc</option>
+                    <option value="des-cbc">3des-cbc</option>
+                    <option value="arcfour256">arcfour256</option>
+                    <option value="arcfour128">arcfour128</option>
+                    <option value="ast128-cbc">cast128-cbc</option>
+                    <option value="arcfour">arcfour</option>
+                </select>
+            </div>
+            <div class="homey-form-group">
+                <label class="homey-form-label" for="hostKey"><span data-i18n="setup.algorithm.hostkey">HostKey</span></label>
+                <select class="home-form-input" id="hostKey" name="hostKey" onselect="settingsChanged()">
+                    <option value="default">default</option>
+                    <option value="ssh-ed25519">ssh-ed25519</option>
+                    <option value="ecdsa-sha2-nistp256">ecdsa-sha2-nistp256</option>
+                    <option value="ecdsa-sha2-nistp384">ecdsa-sha2-nistp384</option>
+                    <option value="ecdsa-sha2-nistp521">ecdsa-sha2-nistp521</option>
+                    <option value="rsa-sha2-512">rsa-sha2-512</option>
+                    <option value="rsa-sha2-256">rsa-sha2-256</option>
+                    <option value="ssh-rsa">ssh-rsa</option>
+                    <option value="ssh-dss">ssh-dss</option>
+                </select>
+            </div>
+            <div class="homey-form-group">
+                <label class="homey-form-label" for="hmac"><span data-i18n="setup.algorithm.hmac">hmac</span></label>
+                <select class="home-form-input" id="hmac" name="hmac" onselect="settingsChanged()">
+                    <option value="default">default</option>
+                    <option value="hmac-sha2-256-etm@openssh.com">hmac-sha2-256-etm@openssh.com</option>
+                    <option value="hmac-sha2-512-etm@openssh.com">hmac-sha2-512-etm@openssh.com</option>
+                    <option value="hmac-sha1-etm@openssh.com">hmac-sha1-etm@openssh.com</option>
+                    <option value="hmac-sha2-256">hmac-sha2-256</option>
+                    <option value="hmac-sha2-512">hmac-sha2-512</option>
+                    <option value="hmac-sha1">hmac-sha1</option>
+                    <option value="hmac-md5">hmac-md5</option>
+                    <option value="hmac-sha2-256-96">hmac-sha2-256-96</option>
+                    <option value="hmac-sha2-512-96">hmac-sha2-512-96</option>
+                    <option value="hmac-ripemd160">hmac-ripemd160</option>
+                    <option value="hmac-sha1-96">hmac-sha1-96</option>
+                    <option value="hmac-md5-96">hmac-md5-96</option>
+                </select>
+            </div>
+            <div class="homey-form-group">
+                <label class="homey-form-label" for="compression"><span data-i18n="setup.algorithm.compression">compression</span></label>
+                <select class="home-form-input" id="compression" name="compression" onselect="settingsChanged()">
+                    <option value="default">default</option>
+                    <option value="none">none</option>
+                    <option value="zlib">zlib</option>
+                    <option value="zlib@openssh.com">zlib@openssh.com</option>
+                </select>
+            </div>
+        </fieldset>
+    </form>
+    <button class="homey-button-secondary-shadow" id="check" class="left" onclick="checkConnection()"><span data-i18n="setup.check">Check</span></button>
+</div>

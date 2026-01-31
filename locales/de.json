@@ -1,0 +1,47 @@
+{
+  "setup": {
+    "main": "SSH Server",
+    "title": "Verbindungsdaten",
+    "name": "Devicename",
+    "address": "Server Adresse",
+    "address-hint": "IP Adresse oder Hostname des SSH Servers",
+    "port": "Server port",
+    "port-hint": "Portnummer, auf dem der SSH Dienst auf dem Server lauscht",
+    "auth": {
+      "title": "Authentifizierung",
+      "type": "Typ",
+      "password": "Username/Passwort",
+      "key": "Private key"
+    },
+    "algorithm": {
+      "title": "Details",
+      "kex": "Key Exchange Algorithm (kex)",
+      "cipher": "Verschlüsselungsalgorithmus",
+      "hostkey": "HostKey Algorithmus",
+      "hmac": "HMac",
+      "compression": "Kompressionsalgorithmus"
+    },
+    "username": "Username",
+    "username-hint": "Name des Benutzers, der auf dem Server angemeldet werden soll",
+    "password": "Passwort",
+    "password-hint": "Wenn Username/Passwort Authentifizierung genutzt werden soll, muss hier das Passwort eingetragen werden. Wird ein PrivateKey UND ein Passwort eingegeben, wird immer der Key verwendet",
+    "key": "Private key",
+    "passphrase": "Passphrase",
+    "check": "Prüfen",
+    "validation": {
+      "required": "Das Feld __input__ muss ausgefüllt werden",
+      "port": "Das Feld __input__ muss ausgefüllt sein und der Wert muss zwischen 1 und 65535 liegen"
+    },
+    "connection-test": {
+      "success": "Erfolgreich",
+      "failed": "Nicht erfolgreich",
+      "failed-detail": "Nicht erfolgreich: __detail__",
+      "failed-authentication": "Authentifizierung fehlgeschlagen",
+      "failed-unreachable-host": "Server nicht gefunden"
+    },
+    "command": {
+      "failed": "Kommando fehlgeschlagen (Exit __code__): __stderr__"
+    }
+  },
+  "please-wait": "Bitte warten"
+}

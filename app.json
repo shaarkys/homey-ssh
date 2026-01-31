@@ -1,0 +1,892 @@
+{
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
+  "id": "de.jnkconsulting.smart.ssh4homey",
+  "version": "1.2.0",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "brandColor": "#000000",
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "Simple-SSH",
+    "de": "Simple-SSH"
+  },
+  "description": {
+    "en": "A full working SSH Client for Homey. Control your services and ssh enabled devices, from Homey"
+  },
+  "category": [
+    "tools"
+  ],
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "Jochen Zink"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/de.jnkconsulting/smart/homey-ssh/-/issues"
+  },
+  "source": "https://gitlab.com/de.jnkconsulting/smart/homey-ssh/-/tree/main",
+  "support": "mailto:contact-project+de-jnkconsulting-smart-homey-ssh-42484585-issue-@incoming.gitlab.com",
+  "contributing": {
+    "donate": {
+      "paypal": {
+        "username": "jochenzink84"
+      }
+    }
+  },
+  "flow": {
+    "triggers": [
+      {
+        "id": "global_ssh_command_failed",
+        "title": {
+          "en": "SSH command failed (any device)",
+          "de": "SSH Kommando fehlgeschlagen (jedes Gerät)"
+        },
+        "tokens": [
+          {
+            "name": "device_name",
+            "type": "string",
+            "title": {
+              "en": "Device name",
+              "de": "Gerätename"
+            }
+          },
+          {
+            "name": "device_id",
+            "type": "string",
+            "title": {
+              "en": "Device id",
+              "de": "Geräte-ID"
+            }
+          },
+          {
+            "name": "host",
+            "type": "string",
+            "title": {
+              "en": "Host",
+              "de": "Host"
+            }
+          },
+          {
+            "name": "command",
+            "type": "string",
+            "title": {
+              "en": "Command that failed.",
+              "de": "Kommando, fehlgeschlagen ist."
+            }
+          },
+          {
+            "name": "errormessage",
+            "type": "string",
+            "title": {
+              "en": "Description of the error",
+              "de": "Beschreibung des Fehlers"
+            }
+          }
+        ],
+        "hint": {
+          "en": "Triggers when any SSH command fails on any SSH device.",
+          "de": "Wird ausgelöst, wenn ein SSH Kommando auf einem SSH Gerät fehlschlägt."
+        }
+      },
+      {
+        "id": "async_ssh_command_success",
+        "title": {
+          "en": "SSH result is ready",
+          "de": "SSH Ergebnis steht bereit"
+        },
+        "tokens": [
+          {
+            "name": "command",
+            "type": "string",
+            "title": {
+              "en": "Command that triggered the result.",
+              "de": "Kommando, welches das Ergebnis ausgelöst hat."
+            }
+          },
+          {
+            "name": "stdout",
+            "type": "string",
+            "title": {
+              "en": "Output of the command (stdout). If there is no output, this value is empty.",
+              "de": "Ausgabe des Kommandos (stdout). Wenn keine Ausgabe erfolgt, ist dieser Wert leer."
+            }
+          },
+          {
+            "name": "stderr",
+            "type": "string",
+            "title": {
+              "en": "Erroroutput of the command (stderr). If there is no output, this value is empty.",
+              "de": "Fehlerausgabe des Kommandos (stderr). Wenn keine Ausgabe erfolgt, ist dieser Wert leer."
+            }
+          },
+          {
+            "name": "code",
+            "type": "number",
+            "title": {
+              "en": "If available, the return code is provided here",
+              "de": "Wenn vorhanden, wird hier der Returncode bereit gestellt."
+            },
+            "example": 0
+          },
+          {
+            "name": "signal",
+            "type": "string",
+            "title": {
+              "en": "If available, the signal response is provided here",
+              "de": "Wenn vorhanden, wird hier das gesendete signal bereit gestellt."
+            }
+          }
+        ],
+        "hint": {
+          "en": "As soon as an asynchronously sent SSH command has been completed, this card is called up.",
+          "de": "Sobald ein asynchron gesendetes SSH Kommando abgeschlossen wurde, wird diese Karte aufgerufen."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=ssh-server"
+          }
+        ]
+      },
+      {
+        "id": "async_ssh_command_failed",
+        "title": {
+          "en": "Asynchronous SSH call failed",
+          "de": "Asynchroner SSH Aufruf ist fehlgeschlagen"
+        },
+        "tokens": [
+          {
+            "name": "command",
+            "type": "string",
+            "title": {
+              "en": "Command that failed.",
+              "de": "Kommando, fehlgeschlagen ist."
+            }
+          },
+          {
+            "name": "errormessage",
+            "type": "string",
+            "title": {
+              "en": "Description of the error",
+              "de": "Beschreibung des Fehlers"
+            }
+          }
+        ],
+        "hint": {
+          "en": "As soon as an asynchronously sent SSH command fails, this card is called.",
+          "de": "Sobald ein asynchron gesendetes SSH Kommando fehlschlägt, wird diese Karte aufgerufen."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=ssh-server"
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "send_sync_ssh_command",
+        "title": {
+          "en": "Send command",
+          "de": "Kommando senden"
+        },
+        "titleFormatted": {
+          "en": "Send command [[command]]",
+          "de": "Sende Kommando [[command]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=ssh-server"
+          },
+          {
+            "type": "text",
+            "name": "command",
+            "title": {
+              "en": "Command",
+              "de": "Kommando"
+            },
+            "placeholder": {
+              "en": "whoami",
+              "de": "whoami"
+            }
+          }
+        ],
+        "tokens": [
+          {
+            "name": "stdout",
+            "type": "string",
+            "title": {
+              "en": "Output of the command (stdout). If there is no output, this value is empty.",
+              "de": "Ausgabe des Kommandos (stdout). Wenn keine Ausgabe erfolgt, ist dieser Wert leer."
+            }
+          },
+          {
+            "name": "stderr",
+            "type": "string",
+            "title": {
+              "en": "Erroroutput of the command (stderr). If there is no output, this value is empty.",
+              "de": "Fehlerausgabe des Kommandos (stderr). Wenn keine Ausgabe erfolgt, ist dieser Wert leer."
+            }
+          },
+          {
+            "name": "code",
+            "type": "number",
+            "title": {
+              "en": "If available, the return code is provided here",
+              "de": "Wenn vorhanden, wird hier der Returncode bereit gestellt."
+            },
+            "example": 0
+          },
+          {
+            "name": "signal",
+            "type": "string",
+            "title": {
+              "en": "If available, the signal response is provided here",
+              "de": "Wenn vorhanden, wird hier das gesendete signal bereit gestellt."
+            }
+          }
+        ],
+        "hint": {
+          "en": "Synchronously executes the specified command via SSH and makes the result available in the flow.",
+          "de": "Führt synchron den angegeben Befehl per SSH aus und stellt das Ergebnis im Flow zur Verfügung."
+        }
+      },
+      {
+        "id": "send_async_ssh_command",
+        "title": {
+          "en": "Send command asynchronously",
+          "de": "Kommando asynchron senden"
+        },
+        "titleFormatted": {
+          "en": "Send command [[command]] asynchronously",
+          "de": "Sende Kommando [[command]] asynchron"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=ssh-server"
+          },
+          {
+            "type": "text",
+            "name": "command",
+            "title": {
+              "en": "Command",
+              "de": "Kommando"
+            },
+            "placeholder": {
+              "en": "whoami",
+              "de": "whoami"
+            }
+          }
+        ],
+        "hint": {
+          "en": "Executes the specified command asynchronously via SSH. As soon as the result is available, the \"SSH result is ready\" card is called up.",
+          "de": "Führt asynchron den angegeben Befehl per SSH aus. Sobald das Ergebnis vorliegt, wird die Karte \"SSH Ergebnis steht bereit\" aufgerufen"
+        }
+      }
+    ]
+  },
+  "drivers": [
+    {
+      "name": {
+        "en": "ssh-server"
+      },
+      "class": "other",
+      "capabilities": [
+        "alarm_connection_failed",
+        "last_connected"
+      ],
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "lan"
+      ],
+      "images": {
+        "small": "/drivers/ssh-server/assets/images/small.png",
+        "large": "/drivers/ssh-server/assets/images/large.png",
+        "xlarge": "/drivers/ssh-server/assets/images/xlarge.png"
+      },
+      "pair": [
+        {
+          "id": "connect",
+          "navigation": {
+            "next": "list_my_devices"
+          }
+        },
+        {
+          "id": "list_my_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_my_devices",
+            "prev": "connect"
+          },
+          "options": {
+            "singular": true
+          }
+        },
+        {
+          "id": "add_my_devices",
+          "template": "add_devices"
+        }
+      ],
+      "id": "ssh-server",
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Connection data",
+            "de": "Verbindungsdaten"
+          },
+          "children": [
+            {
+              "id": "host",
+              "type": "text",
+              "label": {
+                "en": "Server address",
+                "de": "Server Adresse"
+              },
+              "value": "",
+              "hint": {
+                "en": "IP address or host name of the SSH server",
+                "de": "IP Adresse oder Hostname des SSH Servers"
+              }
+            },
+            {
+              "id": "port",
+              "type": "number",
+              "label": {
+                "en": "Server port",
+                "de": "Server port"
+              },
+              "value": 22,
+              "min": 0,
+              "max": 65535,
+              "hint": {
+                "en": "Port number on which the SSH service is listening on the server",
+                "de": "Portnummer, auf dem der SSH Dienst auf dem Server lauscht"
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Authentication",
+            "de": "Authentifizierung"
+          },
+          "children": [
+            {
+              "id": "username",
+              "type": "text",
+              "label": {
+                "en": "Username",
+                "de": "Username"
+              },
+              "value": "",
+              "hint": {
+                "en": "Name of the user to be logged on to the server",
+                "de": "Name des Benutzers, der auf dem Server angemeldet werden soll"
+              }
+            },
+            {
+              "id": "password",
+              "type": "password",
+              "label": {
+                "en": "Password",
+                "de": "Passwort"
+              },
+              "value": "",
+              "hint": {
+                "en": "If username/password authentication is to be used, the password must be entered here. If a private key AND a password is entered, the key is always used",
+                "de": "Wenn Username/Passwort Authentifizierung genutzt werden soll, muss hier das Passwort eingetragen werden. Wird ein PrivateKey UND ein Passwort eingegeben, wird immer der Key verwendet"
+              }
+            },
+            {
+              "id": "privateKey",
+              "type": "textarea",
+              "label": {
+                "en": "Private key",
+                "de": "Private key"
+              },
+              "value": "",
+              "hint": {
+                "en": "If private key authentication is to be used, the key must be entered here. If a private key AND a password is entered, the key is always used",
+                "de": "Wenn PrivateKey Authentifizierung genutzt werden soll, muss hier der Key eingetragen werden. Wird ein PrivateKey UND ein Passwort eingegeben, wird immer der Key verwendet"
+              }
+            },
+            {
+              "id": "passphrase",
+              "type": "password",
+              "label": {
+                "en": "Passphrase",
+                "de": "Passphrase"
+              },
+              "value": "",
+              "hint": {
+                "en": "If PrivateKey authentication is to be used and the PrivateKey is encrypted, the password must be entered here to decrypt the key",
+                "de": "Wenn PrivateKey Authentifizierung genutzt werden soll und der PrivateKey verschlüsselt ist, muss hier das Passwort eingetragen werden um den Key zu entschlüsseln"
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Details",
+            "de": "Details"
+          },
+          "children": [
+            {
+              "id": "kexAlgorithm",
+              "type": "dropdown",
+              "value": "default",
+              "label": {
+                "en": "Key Exchange Algorithm (kex)",
+                "de": "Key Exchange Algorithm (kex)"
+              },
+              "values": [
+                {
+                  "id": "default",
+                  "label": {
+                    "en": "default"
+                  }
+                },
+                {
+                  "id": "curve25519-sha256",
+                  "label": {
+                    "en": "curve25519-sha256"
+                  }
+                },
+                {
+                  "id": "curve25519-sha256@libssh.org",
+                  "label": {
+                    "en": "curve25519-sha256@libssh.org"
+                  }
+                },
+                {
+                  "id": "ecdh-sha2-nistp256",
+                  "label": {
+                    "en": "ecdh-sha2-nistp256"
+                  }
+                },
+                {
+                  "id": "ecdh-sha2-nistp384",
+                  "label": {
+                    "en": "ecdh-sha2-nistp384"
+                  }
+                },
+                {
+                  "id": "ecdh-sha2-nistp521",
+                  "label": {
+                    "en": "ecdh-sha2-nistp521"
+                  }
+                },
+                {
+                  "id": "diffie-hellman-group-exchange-sha256",
+                  "label": {
+                    "en": "diffie-hellman-group-exchange-sha256"
+                  }
+                },
+                {
+                  "id": "diffie-hellman-group14-sha256",
+                  "label": {
+                    "en": "diffie-hellman-group14-sha256"
+                  }
+                },
+                {
+                  "id": "diffie-hellman-group15-sha512",
+                  "label": {
+                    "en": "diffie-hellman-group15-sha512"
+                  }
+                },
+                {
+                  "id": "diffie-hellman-group16-sha512",
+                  "label": {
+                    "en": "diffie-hellman-group16-sha512"
+                  }
+                },
+                {
+                  "id": "diffie-hellman-group17-sha512",
+                  "label": {
+                    "en": "diffie-hellman-group17-sha512"
+                  }
+                },
+                {
+                  "id": "diffie-hellman-group18-sha512",
+                  "label": {
+                    "en": "diffie-hellman-group18-sha512"
+                  }
+                },
+                {
+                  "id": "diffie-hellman-group-exchange-sha1",
+                  "label": {
+                    "en": "diffie-hellman-group-exchange-sha1"
+                  }
+                },
+                {
+                  "id": "diffie-hellman-group14-sha1",
+                  "label": {
+                    "en": "diffie-hellman-group14-sha1"
+                  }
+                },
+                {
+                  "id": "diffie-hellman-group1-sha1",
+                  "label": {
+                    "en": "diffie-hellman-group1-sha1"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "cipherAlgorithm",
+              "type": "dropdown",
+              "value": "default",
+              "label": {
+                "en": "Encryption algorithm",
+                "de": "Verschlüsselungsalgorithmus"
+              },
+              "values": [
+                {
+                  "id": "default",
+                  "label": {
+                    "en": "default"
+                  }
+                },
+                {
+                  "id": "chacha20-poly1305@openssh.com",
+                  "label": {
+                    "en": "chacha20-poly1305@openssh.com"
+                  }
+                },
+                {
+                  "id": "aes128-gcm",
+                  "label": {
+                    "en": "aes128-gcm"
+                  }
+                },
+                {
+                  "id": "es128-gcm@openssh.com",
+                  "label": {
+                    "en": "aes128-gcm@openssh.com"
+                  }
+                },
+                {
+                  "id": "aes256-gcm",
+                  "label": {
+                    "en": "aes256-gcm"
+                  }
+                },
+                {
+                  "id": "aes256-gcm@openssh.com",
+                  "label": {
+                    "en": "aes256-gcm@openssh.com"
+                  }
+                },
+                {
+                  "id": "aes128-ctr",
+                  "label": {
+                    "en": "aes128-ctr"
+                  }
+                },
+                {
+                  "id": "aes192-ctr",
+                  "label": {
+                    "en": "aes192-ctr"
+                  }
+                },
+                {
+                  "id": "aes256-ctr",
+                  "label": {
+                    "en": "aes256-ctr"
+                  }
+                },
+                {
+                  "id": "aes256-cbc",
+                  "label": {
+                    "en": "aes256-cbc"
+                  }
+                },
+                {
+                  "id": "aes192-cbc",
+                  "label": {
+                    "en": "aes192-cbc"
+                  }
+                },
+                {
+                  "id": "aes128-cbc",
+                  "label": {
+                    "en": "aes128-cbc"
+                  }
+                },
+                {
+                  "id": "blowfish-cbc",
+                  "label": {
+                    "en": "blowfish-cbc"
+                  }
+                },
+                {
+                  "id": "des-cbc",
+                  "label": {
+                    "en": "3des-cbc"
+                  }
+                },
+                {
+                  "id": "arcfour256",
+                  "label": {
+                    "en": "arcfour256"
+                  }
+                },
+                {
+                  "id": "arcfour128",
+                  "label": {
+                    "en": "arcfour128"
+                  }
+                },
+                {
+                  "id": "ast128-cbc",
+                  "label": {
+                    "en": "cast128-cbc"
+                  }
+                },
+                {
+                  "id": "arcfour",
+                  "label": {
+                    "en": "arcfour"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "hostKeyAlgorithm",
+              "type": "dropdown",
+              "value": "default",
+              "label": {
+                "en": "HostKey algorithm",
+                "de": "HostKey Algorithmus"
+              },
+              "values": [
+                {
+                  "id": "default",
+                  "label": {
+                    "en": "default"
+                  }
+                },
+                {
+                  "id": "ssh-ed25519",
+                  "label": {
+                    "en": "ssh-ed25519"
+                  }
+                },
+                {
+                  "id": "ecdsa-sha2-nistp256",
+                  "label": {
+                    "en": "ecdsa-sha2-nistp256"
+                  }
+                },
+                {
+                  "id": "ecdsa-sha2-nistp384",
+                  "label": {
+                    "en": "ecdsa-sha2-nistp384"
+                  }
+                },
+                {
+                  "id": "ecdsa-sha2-nistp521",
+                  "label": {
+                    "en": "ecdsa-sha2-nistp521"
+                  }
+                },
+                {
+                  "id": "rsa-sha2-512",
+                  "label": {
+                    "en": "rsa-sha2-512"
+                  }
+                },
+                {
+                  "id": "rsa-sha2-256",
+                  "label": {
+                    "en": "rsa-sha2-256"
+                  }
+                },
+                {
+                  "id": "ssh-rsa",
+                  "label": {
+                    "en": "ssh-rsa"
+                  }
+                },
+                {
+                  "id": "ssh-dss",
+                  "label": {
+                    "en": "ssh-dss"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "hmac",
+              "type": "dropdown",
+              "value": "default",
+              "label": {
+                "en": "HMac",
+                "de": "HMac"
+              },
+              "values": [
+                {
+                  "id": "default",
+                  "label": {
+                    "en": "default"
+                  }
+                },
+                {
+                  "id": "hmac-sha2-256-etm@openssh.com",
+                  "label": {
+                    "en": "hmac-sha2-256-etm@openssh.com"
+                  }
+                },
+                {
+                  "id": "hmac-sha2-512-etm@openssh.com",
+                  "label": {
+                    "en": "hmac-sha2-512-etm@openssh.com"
+                  }
+                },
+                {
+                  "id": "hmac-sha1-etm@openssh.com",
+                  "label": {
+                    "en": "hmac-sha1-etm@openssh.com"
+                  }
+                },
+                {
+                  "id": "hmac-sha2-256",
+                  "label": {
+                    "en": "hmac-sha2-256"
+                  }
+                },
+                {
+                  "id": "hmac-sha2-512",
+                  "label": {
+                    "en": "hmac-sha2-512"
+                  }
+                },
+                {
+                  "id": "hmac-sha1",
+                  "label": {
+                    "en": "hmac-sha1"
+                  }
+                },
+                {
+                  "id": "hmac-md5",
+                  "label": {
+                    "en": "hmac-md5"
+                  }
+                },
+                {
+                  "id": "hmac-sha2-256-96",
+                  "label": {
+                    "en": "hmac-sha2-256-96"
+                  }
+                },
+                {
+                  "id": "hmac-sha2-512-96",
+                  "label": {
+                    "en": "hmac-sha2-512-96"
+                  }
+                },
+                {
+                  "id": "hmac-ripemd160",
+                  "label": {
+                    "en": "hmac-ripemd160"
+                  }
+                },
+                {
+                  "id": "hmac-sha1-96",
+                  "label": {
+                    "en": "hmac-sha1-96"
+                  }
+                },
+                {
+                  "id": "hmac-md5-96",
+                  "label": {
+                    "en": "hmac-md5-96"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "compression",
+              "type": "dropdown",
+              "value": "default",
+              "label": {
+                "en": "Compression algorithm",
+                "de": "Kompressionsalgorithmus"
+              },
+              "values": [
+                {
+                  "id": "default",
+                  "label": {
+                    "en": "default"
+                  }
+                },
+                {
+                  "id": "none",
+                  "label": {
+                    "en": "none"
+                  }
+                },
+                {
+                  "id": "zlib",
+                  "label": {
+                    "en": "zlib"
+                  }
+                },
+                {
+                  "id": "zlib@openssh.com",
+                  "label": {
+                    "en": "zlib@openssh.com"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "capabilities": {
+    "alarm_connection_failed": {
+      "type": "boolean",
+      "title": {
+        "en": "Connection failed",
+        "de": "Verbindung fehlgeschlagen"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "icon": "/assets/images/disconnected.svg",
+      "insights": true
+    },
+    "last_connected": {
+      "type": "string",
+      "title": {
+        "en": "Last connected",
+        "de": "Letzte Verbindung"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "icon": "/assets/images/calendar.svg",
+      "insights": false
+    }
+  }
+}
