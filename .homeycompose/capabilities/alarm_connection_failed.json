@@ -8,5 +8,13 @@
   "setable": false,
   "uiComponent": "sensor",
   "icon": "/assets/images/disconnected.svg",
-  "insights": true
+  "insights": true,
+  "insightsTitleTrue": {
+    "en": "Disconnected",
+    "de": "Getrennt"
+  },
+  "insightsTitleFalse": {
+    "en": "Connected",
+    "de": "Verbunden"
+  }
 }

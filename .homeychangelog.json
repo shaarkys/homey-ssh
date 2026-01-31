@@ -21,6 +21,6 @@
     "en": "Prevented app crashes on SSH socket errors, Improved error handling for common connection drop cases, new developer, new logo"
   },
   "1.2.2": {
-    "en": "Prevented app crashes on SSH socket errors, Improved error handling for common connection drop cases, new developer, new logo"
+    "en": "- Prevented app crashes on SSH socket errors\n- Improved error handling for common connection drop cases\n- New developer and logo\n- Improved device activity log labels for connection status"
   }
 }
