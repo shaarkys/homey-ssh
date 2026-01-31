@@ -1,6 +1,6 @@
 {
   "id": "de.jnkconsulting.smart.ssh4homey",
-  "version": "1.2.1",
+  "version": "1.2.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "brandColor": "#000000",
@@ -24,18 +24,25 @@
     "xlarge": "/assets/images/xlarge.png"
   },
   "author": {
-    "name": "Jochen Zink"
+    "name": "Bretislav Kubesa"
   },
   "bugs": {
-    "url": "https://gitlab.com/de.jnkconsulting/smart/homey-ssh/-/issues"
+    "url": "https://github.com/shaarkys/homey-ssh/issues"
   },
-  "source": "https://gitlab.com/de.jnkconsulting/smart/homey-ssh/-/tree/main",
-  "support": "mailto:contact-project+de-jnkconsulting-smart-homey-ssh-42484585-issue-@incoming.gitlab.com",
+  "source": "https://github.com/shaarkys/homey-ssh",
+  "support": "https://github.com/shaarkys/homey-ssh/issues",
   "contributing": {
     "donate": {
       "paypal": {
-        "username": "jochenzink84"
+        "username": "bkubesa"
       }
     }
+  },
+  "contributors": {
+    "developers": [
+      {
+        "name": "Jochen Zink"
+      }
+    ]
   }
 }
