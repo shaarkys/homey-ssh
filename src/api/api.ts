@@ -67,6 +67,7 @@ export class SSHApi {
         const ssh = new NodeSSH()
         try {
             const client = await ssh.connect(this.sshConfig)
+            this.attachClientErrorHandler(ssh)
             if (!client.isConnected()) {
                 throw new Error(this.t('setup.connection-test.failed'))
             }
@@ -85,6 +86,7 @@ export class SSHApi {
         try {
             this.log('connecting ...')
             const client = await ssh.connect(this.sshConfig)
+            this.attachClientErrorHandler(ssh)
             if (!client.isConnected()) {
                 throw new Error(this.t('setup.connection-test.failed'))
             }
@@ -120,7 +122,7 @@ export class SSHApi {
                 return new Error(this.t('setup.connection-test.failed-unreachable-host'))
             }
             else if ('client-socket' === e.level) {
-                if (e.code && 'EHOSTUNREACH' === e.code) {
+                if (e.code && (e.code === 'EHOSTUNREACH' || e.code === 'ENETUNREACH' || e.code === 'ECONNREFUSED' || e.code === 'ECONNRESET' || e.code === 'EPIPE' || e.code === 'ETIMEDOUT')) {
                     return new Error(this.t('setup.connection-test.failed-unreachable-host'))
                 }
             }
@@ -129,6 +131,15 @@ export class SSHApi {
             return new Error(this.t('setup.connection-test.failed-detail', {detail: e.message}))
         }
         return new Error(this.t('setup.connection-test.failed-detail', {detail: e}))
+    }
+
+    private attachClientErrorHandler(ssh: NodeSSH) {
+        if (!ssh.connection) {
+            return
+        }
+        ssh.connection.on('error', (error) => {
+            this.log('ssh client error', error)
+        })
     }
 
 }
