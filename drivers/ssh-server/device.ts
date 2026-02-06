@@ -91,7 +91,8 @@ class SSHServerDevice extends Homey.Device {
                     stderr: result.stderr || ''
                   });
                   device.error("Async command failed (non-zero exit): " + args.command + ' - ' + errorMessage)
-                  device.updateConnectionRelatedCapabilities(false).then();
+                  device.updateConnectionRelatedCapabilities(false)
+                      .catch(e => device.error('Failed to update capabilities after async command failure', e));
                   device.triggerGlobalError(args.command, errorMessage);
                   const response = {
                     command: args.command,
@@ -120,7 +121,8 @@ class SSHServerDevice extends Homey.Device {
                   response.code = result.code
                 }
                 device.log("Updating capabilities: " + args.command)
-                device.updateConnectionRelatedCapabilities(true).then();
+                device.updateConnectionRelatedCapabilities(true)
+                    .catch(e => device.error('Failed to update capabilities after async command success', e));
                 device.log("Triggering response card: " + args.command)
                 device.asyncResponseTriggerCard
                     ?.trigger(device, response, state)
@@ -133,7 +135,8 @@ class SSHServerDevice extends Homey.Device {
             })
             .catch(e => {
               device.error("Async command failed: " + args.command, e);
-              device.updateConnectionRelatedCapabilities(false).then();
+              device.updateConnectionRelatedCapabilities(false)
+                  .catch(e => device.error('Failed to update capabilities after async command error', e));
               const errorMessage = device.normalizeErrorMessage(e);
               const response = {
                 command: args.command,
@@ -219,11 +222,11 @@ class SSHServerDevice extends Homey.Device {
       const now = new Date();
 
       const formattedNow = now.toLocaleDateString('de-DE', {year: "numeric", month: "numeric", day: "numeric"}) + ' - ' + now.toLocaleTimeString('de-DE');
-      updateCapability(this, 'last_connected', formattedNow).then()
-      updateCapability(this, 'alarm_connection_failed', false).then();
+      await updateCapability(this, 'last_connected', formattedNow);
+      await updateCapability(this, 'alarm_connection_failed', false);
     }
     else {
-      updateCapability(this, 'alarm_connection_failed', true).then();
+      await updateCapability(this, 'alarm_connection_failed', true);
     }
   }
 

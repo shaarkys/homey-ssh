@@ -585,7 +585,7 @@
                   }
                 },
                 {
-                  "id": "es128-gcm@openssh.com",
+                  "id": "aes128-gcm@openssh.com",
                   "label": {
                     "en": "aes128-gcm@openssh.com"
                   }
@@ -645,7 +645,7 @@
                   }
                 },
                 {
-                  "id": "des-cbc",
+                  "id": "3des-cbc",
                   "label": {
                     "en": "3des-cbc"
                   }
@@ -663,7 +663,7 @@
                   }
                 },
                 {
-                  "id": "ast128-cbc",
+                  "id": "cast128-cbc",
                   "label": {
                     "en": "cast128-cbc"
                   }

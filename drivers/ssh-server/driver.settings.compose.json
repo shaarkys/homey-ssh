@@ -142,7 +142,7 @@
           { "id": "default", "label": { "en": "default" } },
           { "id": "chacha20-poly1305@openssh.com", "label": { "en": "chacha20-poly1305@openssh.com" } },
           { "id": "aes128-gcm", "label": { "en": "aes128-gcm" } },
-          { "id": "es128-gcm@openssh.com", "label": { "en": "aes128-gcm@openssh.com" } },
+          { "id": "aes128-gcm@openssh.com", "label": { "en": "aes128-gcm@openssh.com" } },
           { "id": "aes256-gcm", "label": { "en": "aes256-gcm" } },
           { "id": "aes256-gcm@openssh.com", "label": { "en": "aes256-gcm@openssh.com" } },
           { "id": "aes128-ctr", "label": { "en": "aes128-ctr" } },
@@ -152,10 +152,10 @@
           { "id": "aes192-cbc", "label": { "en": "aes192-cbc" } },
           { "id": "aes128-cbc", "label": { "en": "aes128-cbc" } },
           { "id": "blowfish-cbc", "label": { "en": "blowfish-cbc" } },
-          { "id": "des-cbc", "label": { "en": "3des-cbc" } },
+          { "id": "3des-cbc", "label": { "en": "3des-cbc" } },
           { "id": "arcfour256", "label": { "en": "arcfour256" } },
           { "id": "arcfour128", "label": { "en": "arcfour128" } },
-          { "id": "ast128-cbc", "label": { "en": "cast128-cbc" } },
+          { "id": "cast128-cbc", "label": { "en": "cast128-cbc" } },
           { "id": "arcfour", "label": { "en": "arcfour" } }
         ]
       },

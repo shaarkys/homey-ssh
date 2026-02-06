@@ -9,9 +9,13 @@
           document.getElementById('port').value = settings.port;
           document.getElementById('username').value = settings.credentials.username;
           if (settings.authType === 'USERNAME_PASSWORD') {
+              document.getElementById('auth.type.password').checked = true;
+              document.getElementById('auth.type.key').checked = false;
               document.getElementById('password').value = settings.credentials.password;
           }
           else {
+              document.getElementById('auth.type.password').checked = false;
+              document.getElementById('auth.type.key').checked = true;
               document.getElementById('key').value = settings.credentials.privateKey;
               document.getElementById('passphrase').value = settings.credentials.passphrase;
           }
@@ -31,6 +35,7 @@
               document.getElementById('cipher').value = settings.cipherAlgorithm
           }
       }
+      settingsChanged();
   });
 
   function readInputs() {
@@ -48,14 +53,14 @@
           compression: document.getElementById('compression').value,
       };
       const authTypePassword = document.getElementById('auth.type.password');
-      if (authTypePassword.checked) {
-          inputs.authType = 'USERNAME_PASSWORD';
-          inputs.credentials.password = document.getElementById('password').value
-      }
-      else {
+      const authTypeKey = document.getElementById('auth.type.key');
+      if (authTypeKey.checked) {
           inputs.authType = 'PRIVATE_KEY';
           inputs.credentials.privateKey = document.getElementById('key').value
           inputs.credentials.passphrase = document.getElementById('passphrase').value
+      } else {
+          inputs.authType = 'USERNAME_PASSWORD';
+          inputs.credentials.password = document.getElementById('password').value
       }
 
       return inputs;
@@ -125,7 +130,7 @@
                     <legend class="homey-form-radio-set-title"><span data-i18n="setup.auth.type">Authentifizierungsart</span></legend>
 
                     <label class="homey-form-radio">
-                        <input id="auth.type.password" class="homey-form-radio-input" name="auth-type" type="radio" value="password" oninput="settingsChanged()">
+                        <input id="auth.type.password" class="homey-form-radio-input" name="auth-type" type="radio" value="password" oninput="settingsChanged()" checked>
                         <span class="homey-form-radio-checkmark"></span>
                         <span class="homey-form-radio-text" data-i18n="setup.auth.password">Username/Passwort</span>
                     </label>
@@ -179,7 +184,7 @@
                     <option value="default">default</option>
                     <option value="chacha20-poly1305@openssh.com">chacha20-poly1305@openssh.com</option>
                     <option value="aes128-gcm">aes128-gcm</option>
-                    <option value="es128-gcm@openssh.com">aes128-gcm@openssh.com</option>
+                    <option value="aes128-gcm@openssh.com">aes128-gcm@openssh.com</option>
                     <option value="aes256-gcm">aes256-gcm</option>
                     <option value="aes256-gcm@openssh.com">aes256-gcm@openssh.com</option>
                     <option value="aes128-ctr">aes128-ctr</option>
@@ -189,10 +194,10 @@
                     <option value="aes192-cbc">aes192-cbc</option>
                     <option value="aes128-cbc">aes128-cbc</option>
                     <option value="blowfish-cbc">blowfish-cbc</option>
-                    <option value="des-cbc">3des-cbc</option>
+                    <option value="3des-cbc">3des-cbc</option>
                     <option value="arcfour256">arcfour256</option>
                     <option value="arcfour128">arcfour128</option>
-                    <option value="ast128-cbc">cast128-cbc</option>
+                    <option value="cast128-cbc">cast128-cbc</option>
                     <option value="arcfour">arcfour</option>
                 </select>
             </div>

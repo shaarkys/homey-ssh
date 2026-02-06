@@ -71,7 +71,12 @@ export class SSHApi {
             if (!client.isConnected()) {
                 throw new Error(this.t('setup.connection-test.failed'))
             }
-            await client.execCommand("whoami")
+            const probeResult = await client.execCommand("whoami")
+            const hasNonZeroExit = probeResult.code !== null && probeResult.code !== undefined && probeResult.code !== 0
+            const hasOutput = !!probeResult.stdout && probeResult.stdout.trim() !== ''
+            if (hasNonZeroExit || !hasOutput) {
+                throw new Error(this.t('setup.connection-test.failed'))
+            }
             return true
         } catch (e) {
             this.log('error connecting to ' + this.sshConfig.host, e);
