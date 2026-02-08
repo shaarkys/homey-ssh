@@ -66,8 +66,9 @@ export class SSHApi {
     async connectionTest(): Promise<boolean> {
         const ssh = new NodeSSH()
         try {
-            const client = await ssh.connect(this.sshConfig)
+            const connectPromise = ssh.connect(this.sshConfig)
             this.attachClientErrorHandler(ssh)
+            const client = await connectPromise
             if (!client.isConnected()) {
                 throw new Error(this.t('setup.connection-test.failed'))
             }
@@ -84,8 +85,9 @@ export class SSHApi {
         const ssh = new NodeSSH()
         try {
             this.log('connecting ...')
-            const client = await ssh.connect(this.sshConfig)
+            const connectPromise = ssh.connect(this.sshConfig)
             this.attachClientErrorHandler(ssh)
+            const client = await connectPromise
             if (!client.isConnected()) {
                 throw new Error(this.t('setup.connection-test.failed'))
             }
@@ -127,6 +129,10 @@ export class SSHApi {
             }
         }
         if (e.message) {
+            if (typeof e.message === 'string'
+                && e.message.includes('Unsupported state or unable to authenticate data')) {
+                return new Error(this.t('setup.connection-test.failed-authentication'))
+            }
             return new Error(this.t('setup.connection-test.failed-detail', {detail: e.message}))
         }
         return new Error(this.t('setup.connection-test.failed-detail', {detail: e}))
