@@ -25,5 +25,8 @@
   },
   "1.2.3": {
     "en": "Improved device activity log labels for connection status"
+  },
+  "1.2.4": {
+    "en": "Fixed SSH auth-tag crash handling during connect."
   }
 }
